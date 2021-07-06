@@ -1,3 +1,4 @@
+
 import os
 
 from flask import Flask, jsonify, make_response
@@ -25,13 +26,14 @@ metrics = RESTfulPrometheusMetrics(app, api)
 
 from app.rbac import rbac
 rbac.setJWTManager(app)
+from app.api.post_comment_api import PostComentAPI
 
-@app.route('/')
-def hello():
-    return jsonify({'message': 'Hello world'})
 
 
 migrate = Migrate(app, db)
+
+
+api.add_resource(PostComentAPI, '/post/<int:post_id>')
 
 from app.prometheus_metrics.prometheus_metrics import (
     init_metrics,
